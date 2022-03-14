@@ -20,6 +20,7 @@ async function run() {
       const database = client.db("online-resturant");
        const menucollection = database.collection("menu");
       const foodcollection = database.collection("food");
+      const reservecollection = database.collection("reserve");
       const userscollection = database.collection("users");
     //   const reviewCollection = database.collection("reviews");
    
@@ -28,6 +29,12 @@ app.get('/menu', async(req, res) => {
     const cursor = menucollection.find({});
     const hotels = await cursor.toArray();
     res.send(hotels);
+})
+            // GET API FOR SHOWING ALL reservation
+app.get('/reserve', async(req, res) => {
+  const cursor = reservecollection.find({});
+  const hotels = await cursor.toArray();
+  res.send(hotels);
 })
 // GET API FOR my BOOKED ROOMS & all booked rooms
 app.get('/food', async(req, res) => {
@@ -67,6 +74,16 @@ app.post('/menu', async(req, res) => {
     res.json(result);
           
   })
+
+// //   POST API TO ADD reservation
+app.post('/reserve', async(req, res) => {
+  const newhotel = req.body; 
+  const result = await reservecollection.insertOne(newhotel);
+  console.log('hitting the post',req.body);
+  console.log('added hotel', result)
+  res.json(result);
+        
+})
 //   // POST API TO ADD BOOKING OF ANY ROOM 
 app.post('/food', async(req, res) => {
   const newroom = req.body; 
